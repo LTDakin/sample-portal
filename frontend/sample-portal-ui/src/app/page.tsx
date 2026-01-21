@@ -1,38 +1,56 @@
 "use client";
-import { useState } from "react";
-import { DotSpinner } from "ldrs/react";
-import "ldrs/react/DotSpinner.css";
+import { findSampleById } from "@/services/samples";
+import { SampleResponse } from "@/types/samples.api";
+import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
+import Sample from "./Sample";
 
 export default function Home() {
   const [sampleId, setSampleId] = useState("");
-  const [fetchingSampleId, setFetchingSampleId] = useState(false);
+  const [debouncedSampleId] = useDebounce(sampleId, 500);
+  const [sample, setSample] = useState<SampleResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSampleIdChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSampleId(e.target.value);
+  useEffect(() => {
+    if (!debouncedSampleId) return;
 
-    // debounce a call to the api for that sample
-  }
+    const fetchSample = async () => {
+      try {
+        setError(null);
+        setSample(null);
+        const sample = await findSampleById(debouncedSampleId);
+        setSample(sample);
+      } catch (error) {
+        setError(
+          error instanceof Error ? error.message : "An unknown error occurred"
+        );
+      }
+    };
+
+    fetchSample();
+  }, [debouncedSampleId]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex w-full max-w-5xl flex-row items-start py-32 px-16 bg-white dark:bg-black">
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans">
+      <main className="flex w-full max-w-5xl flex-row items-start justify-between py-32 px-16 bg-white">
+        <div className="flex flex-col items-center gap-6 text-center">
+          <h1 className="text-3xl font-semibold tracking-tight text-black">
             Search for a Sample ID.
           </h1>
           <div className="flex flex-row gap-6 items-center">
             <input
               type="text"
               placeholder="Enter Sample ID"
-              className="w-full max-w-xs rounded border border-gray-300 px-4 py-2 text-black dark:bg-black dark:text-white"
+              className="w-full max-w-xs rounded border border-gray-300 px-4 py-2 text-black"
               value={sampleId}
-              onChange={handleSampleIdChange}
+              onChange={(e) => setSampleId(e.target.value)}
             />
-            {fetchingSampleId && (
-              <DotSpinner size="30" speed="0.9" color="black" />
-            )}
           </div>
         </div>
+        {sample && (
+          <Sample name={sample.name} dateOfBirth={sample.date_of_birth} />
+        )}
+        {error && <p className="text-red-500 mt-16">{error}</p>}
       </main>
     </div>
   );
