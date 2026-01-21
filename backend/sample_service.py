@@ -1,11 +1,14 @@
 from sample_data import temp_db
 from datetime import date
 
+class SampleNotFoundException(Exception):
+  pass
+
 def find_one(id: int):
   sample = temp_db.get(id, None)
 
   if not sample:
-      raise Exception(f"Sample with id {id} not found")
+    raise SampleNotFoundException(f"Sample with id {id} not found")
 
   return sample
 
