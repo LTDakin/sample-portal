@@ -1,13 +1,13 @@
-"use client";
-import { findSampleById, updateSample } from "@/services/samples";
-import { PatchSampleRequest, SampleResponse } from "@/types/samples.api";
-import { useEffect, useRef, useState } from "react";
-import { useDebounce } from "use-debounce";
-import Sample from "./Sample";
-import SampleDataEntry from "./SampleDataEntry";
+'use client';
+import { findSampleById, updateSample } from '@/services/samples';
+import { PatchSampleRequest, SampleResponse } from '@/types/samples.api';
+import { useEffect, useRef, useState } from 'react';
+import { useDebounce } from 'use-debounce';
+import Sample from './Sample';
+import SampleDataEntry from './SampleDataEntry';
 
 export default function Home() {
-  const [sampleId, setSampleId] = useState("");
+  const [sampleId, setSampleId] = useState('');
   const [debouncedSampleId] = useDebounce(sampleId, 500);
   const [sample, setSample] = useState<SampleResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export default function Home() {
         setSample(sample);
       } catch (error) {
         setError(
-          error instanceof Error ? error.message : "An unknown error occurred"
+          error instanceof Error ? error.message : 'An unknown error occurred'
         );
       }
     };
@@ -36,18 +36,18 @@ export default function Home() {
   function handleSubmitSampleData(date: string, notes: string | null) {
     dialogRef.current?.close();
 
-    if(sampleId === null) {
-      console.error("Sample ID is null");
+    if (sampleId === null) {
+      console.error('Sample ID is null');
       return;
     }
 
     notes = notes ? notes : '';
 
-    const data: PatchSampleRequest = { 
+    const data: PatchSampleRequest = {
       sample_id: sampleId,
       collection_date: date,
-      notes: notes ? notes : ''
-     };
+      notes: notes ? notes : '',
+    };
 
     updateSample(data);
   }
@@ -55,8 +55,12 @@ export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans">
       {sample && (
-        <dialog ref={dialogRef} className="m-auto rounded-lg p-0 shadow-2xl backdrop:bg-black/40 backdrop:backdrop-blur-sm" closedby="any">
-          <SampleDataEntry onSubmitData={handleSubmitSampleData}/>
+        <dialog
+          ref={dialogRef}
+          className="m-auto rounded-lg p-0 shadow-2xl backdrop:bg-black/40 backdrop:backdrop-blur-sm"
+          closedby="any"
+        >
+          <SampleDataEntry onSubmitData={handleSubmitSampleData} />
         </dialog>
       )}
       <main className="flex w-full max-w-5xl flex-row items-start justify-between py-32 px-16 bg-white">
@@ -75,7 +79,11 @@ export default function Home() {
           </div>
         </div>
         {sample && (
-          <Sample name={sample.name} dateOfBirth={sample.date_of_birth} onEnterData={() => dialogRef.current?.showModal()}/>
+          <Sample
+            name={sample.name}
+            dateOfBirth={sample.date_of_birth}
+            onEnterData={() => dialogRef.current?.showModal()}
+          />
         )}
         {error && <p className="text-red-500 mt-16">{error}</p>}
       </main>
