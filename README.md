@@ -16,7 +16,7 @@ _Start the Next.js UI_
 Enter the frontend directory and install modules
 
 ```
-cd frontend/sample-portal
+cd sample-portal-ui
 npm install
 npm run dev
 ```
