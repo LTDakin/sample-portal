@@ -10,12 +10,20 @@ export default function Sample(props: SampleProps) {
   return (
     <>
       <div className="flex flex-col gap-4  h-10">
-        <h1 className="font-bold">Name: {props.name}</h1>
-        <h1 className="font-bold">Date of Birth: {props.dateOfBirth}</h1>
+        <h1 className="font-bold text-2xl">{props.name}</h1>
+        <p>
+          <b>Date of Birth:</b> {props.dateOfBirth}
+        </p>
         {props.collectionDate && (
-          <h1 className="font-bold">Collection Date: {props.collectionDate}</h1>
+          <p>
+            <b>Collection Date:</b> {props.collectionDate}
+          </p>
         )}
-        {props.notes && <h1 className="font-bold">Notes: {props.notes}</h1>}
+        {props.notes && (
+          <p>
+            <b>Notes:</b> {props.notes}
+          </p>
+        )}
       </div>
       <button
         className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors mt-15"
