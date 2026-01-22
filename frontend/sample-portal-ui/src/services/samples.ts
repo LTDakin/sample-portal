@@ -6,10 +6,9 @@ async function findSampleById(id: string): Promise<SampleResponse> {
 }
 
 async function updateSample(
-  id: string,
   data: PatchSampleRequest,
 ): Promise<SampleResponse> {
-  return await api.post(`/sample/${id}`, data); // this should be a patch but following the project requirements we use post instead
+  return await api.post(`/sample/submit`, data); // this should be a patch but following the project requirements we use post instead
 }
 
 export { findSampleById, updateSample };
