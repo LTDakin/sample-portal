@@ -1,36 +1,33 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from sample_service import find_one, update_one, SampleNotFoundException
+import sample_service as sample_service
 
 app = Flask(__name__)
 CORS(app)
 
+@app.errorhandler(sample_service.SampleNotFoundException)
+def handle_sample_not_found(e):
+    return jsonify({"error": "Not Found", "message": str(e)}), 404
+
+@app.errorhandler(ValueError)
+def handle_value_error(e):
+    return jsonify({"error": "Bad Request", "message": str(e)}), 400
+
 @app.get("/sample/<id>")
 def find_sample(id):
-  try:
-    return find_one(id)
-  except SampleNotFoundException as e:
-    return jsonify({"message": str(e)}), 404
-  except ValueError as e:
-    return jsonify({"message": str(e)}), 400
+  return sample_service.find_one(id)
 
 @app.post("/sample/submit")
 def submit_sample():
   data = request.get_json()
 
-  sample_id: str = data.get('sample_id', None)
-  collection_date: str = data.get('collection_date', None)
-  notes: str = data.get('notes', '')
+  if 'sample_id' not in data or 'collection_date' not in data:
+    return jsonify({"message": "Missing required fields"}), 400
 
-  if not sample_id:
-    return jsonify({"message": 'Missing sample_id'}), 400
+  updated_sample = sample_service.update_one(
+        data['sample_id'], 
+        data['collection_date'], 
+        data.get('notes', '')
+    )
 
-  if not collection_date:
-    return jsonify({"message": 'Missing collection_date'}), 400
-
-  try:
-    return update_one(sample_id, collection_date, notes)
-  except SampleNotFoundException as e:
-    return jsonify({"message": str(e)}), 400
-  except ValueError as e:
-    return jsonify({"message": str(e)}), 400
+  return jsonify(updated_sample), 200
