@@ -2,6 +2,8 @@
 
 Search for samples, add collection date and notes
 
+Existing Sample IDs for testing: [1, 2]
+
 ## Local Development
 
 _Start the Flask app_
