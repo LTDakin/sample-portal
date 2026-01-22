@@ -82,6 +82,8 @@ export default function Home() {
           <Sample
             name={sample.name}
             dateOfBirth={sample.date_of_birth}
+            collectionDate={sample.collection_date}
+            notes={sample.notes}
             onEnterData={() => dialogRef.current?.showModal()}
           />
         )}

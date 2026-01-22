@@ -8,12 +8,12 @@ def find_one(id: int):
   try:
     id = int(id)
   except (ValueError, TypeError):
-    raise ValueError(f"'{id}' is not a valid integer")
+    raise ValueError(f"Sample {id} not found")
 
   sample = temp_db.get(id, None)
 
   if not sample:
-    raise SampleNotFoundException(f"Sample with id {id} not found")
+    raise SampleNotFoundException(f"Sample {id} not found")
 
   return sample
 
@@ -23,7 +23,7 @@ def update_one(sample_id: int, collection_date_str: str, notes: str):
   try:
     collection_date = date.fromisoformat(collection_date_str)
   except ValueError:
-    raise ValueError(f"'{collection_date_str}' is not a valid ISO date (YYYY-MM-DD)")
+    raise ValueError(f"'{collection_date_str}' is not a valid date (YYYY-MM-DD)")
   
   sample['collection_date'] = collection_date
   sample['notes'] = notes
