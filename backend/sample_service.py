@@ -5,6 +5,11 @@ class SampleNotFoundException(Exception):
   pass
 
 def find_one(id: int):
+  try:
+    id = int(id)
+  except (ValueError, TypeError):
+    raise ValueError(f"'{id}' is not a valid integer")
+
   sample = temp_db.get(id, None)
 
   if not sample:
@@ -22,5 +27,5 @@ def update_one(sample_id: int, collection_date_str: str, notes: str):
   
   sample['collection_date'] = collection_date
   sample['notes'] = notes
-   
+
   return sample

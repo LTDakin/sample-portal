@@ -1,5 +1,5 @@
 interface PatchSampleRequest {
-  id: string;
+  sample_id: string;
   collection_date: string; // ISO date string
   notes?: string;
 }
@@ -12,4 +12,4 @@ interface SampleResponse {
   notes?: string;
 }
 
-export type { SampleResponse, PatchSampleRequest };
+export type { PatchSampleRequest, SampleResponse };
