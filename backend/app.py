@@ -25,9 +25,9 @@ def submit_sample():
     return jsonify({"message": "Missing required fields"}), 400
 
   updated_sample = sample_service.update_one(
-        data['sample_id'], 
-        data['collection_date'], 
-        data.get('notes', '')
-    )
+    data['sample_id'], 
+    data['collection_date'], 
+    data.get('notes', '')
+  )
 
   return jsonify(updated_sample), 200
