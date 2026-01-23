@@ -9,7 +9,7 @@ export default function SampleDataEntry(props: SampleDataEntryProps) {
   const [notes, setNotes] = useState<string>('');
 
   function handleSubmitData(date: string | null, notes: string) {
-    if (date === null) {
+    if (date === null || date === '') {
       alert('Please enter a date.');
       return;
     }
