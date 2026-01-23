@@ -6,16 +6,16 @@ Existing Sample IDs for testing: [1, 2]
 
 ## Local Development
 
-_Start the Flask app_
+_Set up the Python Enviorment and Start the Flask app_
 
 ```
+python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 flask --app backend/app.py run --debug
 ```
 
-_Start the Next.js UI_
-Enter the frontend directory and install modules
+_Install modules and Start the Next.js UI_
 
 ```
 cd sample-portal-ui
